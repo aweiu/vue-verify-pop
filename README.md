@@ -117,7 +117,7 @@ export default{
 </script>
 ```
 ## 规则简写
-number/int/phone等无须设定值的规则可以直接
+number/int/phone等无须设定值的规则可以直接：
 ```
 <pop>
   <!--该输入框内容必须为手机号-->
