@@ -1,9 +1,7 @@
-'use strict';
-
 /**
  * Created by awei on 2016/6/17.
  */
-module.exports = {
+export default{
   number: {
     common: '请输入数字',
     // >
@@ -31,4 +29,4 @@ module.exports = {
   specialInput: {
     checkbox: '请勾选我'
   }
-};
+}
