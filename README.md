@@ -14,10 +14,11 @@ npm install vue-verify-pop
 import vue from 'vue'
 import verify from 'vue-verify-pop'
 vue.use(verify)
+// 以下配置非必须，按你的需求来
 // 配置默认校验不通过时的提示信息
-// verify.errMsg = YourErroMsg
+verify.errMsg = YourErroMsg
 // 增加校验规则
-// verify.addRule('myRule', (v) => {return '校验不通过'})
+verify.addRule('myRule', (v) => {return '校验不通过'})
 ```
 ### 二，在表单元素中配置校验规则
 ```
