@@ -1,5 +1,5 @@
 # vue-verify-pop
-带气泡提示的vue校验插件
+自带气泡提示的vue校验插件
 
 ## 安装
 ```
@@ -8,7 +8,6 @@ npm install vue-verify-pop
 ## 使用
 **VUE版本：1.x** <br>
 **必须在vue-cli生成的webpack模板环境中使用**
-
 ### 一，在./main.js中执行全局配置
 ```
 import vue from 'vue'
