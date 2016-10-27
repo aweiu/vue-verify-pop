@@ -1,0 +1,12 @@
+{
+  "name": "vue-verify-pop",
+  "version": "0.0.1",
+  "author": {
+    "name": "余阿伟"
+  },
+  "main": "vue-verify-pop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aweiu/vue-verify-pop.git"
+  }
+}
