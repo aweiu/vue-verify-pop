@@ -1,9 +1,11 @@
 /**
  * Created by awei on 2016/6/17.
  */
-import verifyErrMsg from './verify-err-msg'
-import verifyBase from './verify-base'
 // self:当前verifyDirective实例
+import verifyErrMsg from './verify-err-msg'
+import verifyBase from 'verify-base'
+import pop from 'vue-pop'
+verifyBase.errMsg = verifyErrMsg;
 var vue
 var groups = {
   add (uid, name, group) {
@@ -104,7 +106,7 @@ function getPopTip (self = this, el = self.el) {
     methods: component.new()
   })
 }
-export default{
+var exp = {
   install (Vue) {
     vue = Vue
     Vue.directive('verify', {
@@ -185,6 +187,7 @@ export default{
       },
       props: ['name']
     })
+    Vue.component('pop', pop)
     Vue.prototype.$verify = function (target, showError = true) {
       verifyResult.clear()
       var eType = showError ? 'verify' : 'verifyWithoutErrorTip'
@@ -217,5 +220,14 @@ export default{
     self.params.push(name)
     verifyBase.verify(name, fun)
   },
+  errMsg: verifyErrMsg,
   verifyBase: verifyBase
 }
+Object.defineProperty(exp, "errMsg", {
+  set(v) {
+    verifyErrMsg = v;
+    verifyBase.errMsg = v;
+  },
+  get: () => verifyErrMsg
+});
+export default exp

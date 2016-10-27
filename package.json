@@ -8,5 +8,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/aweiu/vue-verify-pop.git"
+  },
+  "dependencies": {
+    "verify-base": "0.0.x",
+    "vue-pop": "0.0.x"
   }
 }

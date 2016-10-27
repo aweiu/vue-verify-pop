@@ -6,11 +6,18 @@
 npm install vue-verify-pop
 ```
 ## 使用
+**VUE版本：1.x** <br>
+**必须在vue-cli生成的webpack模板环境中使用**
+
 ### 一，在./main.js中执行全局配置
 ```
 import vue from 'vue'
 import verify from 'vue-verify-pop'
 vue.use(verify)
+// 配置默认校验不通过时的提示信息
+// verify.errMsg = YourErroMsg
+// 增加校验规则
+// verify.addRule('myRule', (v) => {return '校验不通过'})
 ```
 ### 二，在表单元素中配置校验规则
 ```
@@ -93,7 +100,6 @@ ok，您已经完成了一个基础校验。气泡提示怎么样？丑的话自
 监听其他变量，触发自身校验。<br>
 一个常见例子:最少参与人数不能大于最多参与人数，当最少参与人数变化时应当触发最多参与人数的校验
 ```
-<!--这里用vue模版文件来示例-->
 <template>
   <pop>
     <input placeholder="最少参与人数" v-verify v-model="minNumber" v-verify int>
@@ -137,7 +143,6 @@ maxNumber/minNumber无须写number规则
 ## 自定义校验方法
 如果自带的校验方法满足不了您的需求，可以在校验规则中插入您自己的校验方法
 ```
-<!--这里用vue模版文件来示例-->
 <template>
   <pop>
     <!--通过给props.verify赋值来植入自定义校验-->
@@ -159,9 +164,26 @@ export default{
 }
 </script>
 ```
+## 自定义校验规则
+和自定义校验方法的区别是这个适用于全局，等于增加插件自带的校验规则
+```
+// 新增校验是否为6位数字 val: 待校验的值 rule: 规则值。
+// 校验是否为6位数字这种一般时不需要额外参数用来对比,所以rule参数用不到。校验文本长度，数字大小这种才会用到rule
+// <input v-verify length="6"> '6'会作为rule参数
+var verifyBase = verify.verifyBase
+verify.addRule('number6', (val, rule) => {
+	// 判断是否为6位数字
+	// 只需要关注错误的情况 返回默认出错提示即可
+	if (!verifyBase('number')(val).valid || !verifyBase('length')(val, 6)) return '请输入正确的6位数字'
+})
+```
+调用
+```
+<!--校验不通过提示优先errMsg,然后才是您自定义规则中返回的默认出错提示-->
+<input v-verify number6 err-msg="请输入正确的6位数字验证码">
+```
 ## 手动触发校验&分组校验
 ```
-<!--这里用vue模版文件来示例-->
 <template>
   <pop>
     <!--给目标元素设置v-el-->
@@ -213,6 +235,46 @@ export default{
   }
 }
 </script>
+```
+## 插件的默认校验不通过提示模版
+```
+{
+  number: {
+    common: '请输入数字',
+    // >
+    maxNumber: '该输入框数字不能大于{maxNumber}',
+    // >=
+    maxNumber2: '该输入框数字应小于{maxNumber}',
+    // <
+    minNumber: '该输入框数字不能小于{minNumber}',
+    // <=
+    minNumber2: '该输入框数字应大于{minNumber}',
+    decimalLength: '该输入框最多接受{decimalLength}位小数'
+  },
+  // 特殊类型
+  int: '该输入框仅接受整数',
+  phone: '请输入正确的手机号',
+  idCard: '请输入正确的身份证号',
+  bankCard: '请输入正确的银行卡号',
+  email: '请输入正确的邮箱',
+  verifyCode: '请输入正确的验证码',
+  common: {
+    empty: '请补充该项内容',
+    length: '请输入{length}位字符',
+    minLength: '该输入框内容至少{minLength}位'
+  },
+  specialInput: {
+    checkbox: '请勾选我'
+  }
+}
+```
+您可以按照上述格式自定义您的错误提示
+```
+verify.errMsg = {}
+```
+也可以只修改某些项
+```
+verify.errMsg.int = '{mark}必须为整数'
 ```
 ## 彩蛋
 校验插件不仅能检测到输入内容的变化，绑定值的变化同样在掌控之内，也就是说校验气泡的出现和消失您完全无须手动控制
