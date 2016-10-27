@@ -1,4 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
 node_modules
 dev/dist
-dev/build.js
+dev/babel-all.js

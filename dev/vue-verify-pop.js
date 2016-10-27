@@ -2,7 +2,7 @@
  * Created by awei on 2016/6/17.
  */
 // self:当前verifyDirective实例
-import verifyErrMsg from './verify-err-msg'
+var verifyErrMsg = require('./verify-err-msg')
 import verifyBase from 'verify-base'
 import pop from 'vue-pop'
 verifyBase.errMsg = verifyErrMsg;
