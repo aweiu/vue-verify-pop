@@ -65,7 +65,7 @@ function verifyFromRules (val, rules) {
       }
       continue
     }
-    verifyFun = verifyBase.verify(rule)
+    verifyFun = verifyBase(rule)
     if (verifyFun) {
       var verifyResult = verifyFun(val, rules[rule])
       if (!verifyResult.valid) return verifyResult.err_msg
@@ -218,7 +218,7 @@ var exp = {
     if (typeof fun !== 'function') return console.warn('the type of fun must be function')
     var self = vue.directive('verify')
     self.params.push(name)
-    verifyBase.verify(name, fun)
+    verifyBase(name, fun)
   },
   errMsg: verifyErrMsg,
   verifyBase: verifyBase
