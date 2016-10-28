@@ -101,12 +101,12 @@ function getPopTip() {
   if (self._pop) return self._pop;
   var component = function () {
     var pop = document.getElementById(self.params.pop);
-    if (pop && pop.tagName === 'POP-WRAP') return pop.__vue__;
+    if (pop && pop.tagName === 'POP-EL-WRAP') return pop.__vue__;
     pop = self._host;
     if (pop && pop.$options.name === 'pop') return pop;
     pop = el.parentNode;
     while (pop && pop.tagName !== 'body') {
-      if (pop.tagName === 'POP-WRAP') return pop.__vue__;
+      if (pop.tagName === 'POP-EL-WRAP') return pop.__vue__;
       pop = pop.parentNode;
     }
   }();
