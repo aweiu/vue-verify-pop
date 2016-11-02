@@ -1,6 +1,6 @@
 {
   "name": "vue-verify-pop",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": {
     "name": "余阿伟"
   },
@@ -10,7 +10,7 @@
     "url": "https://github.com/aweiu/vue-verify-pop.git"
   },
   "dependencies": {
-    "verify-base": "0.0.x",
-    "vue-pop": "0.0.x"
+    "verify-base": "0.x",
+    "vue-pop": "0.x"
   }
 }
