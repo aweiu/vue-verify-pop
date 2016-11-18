@@ -23,8 +23,8 @@ verify.addRule('myRule', (v) => {return '校验不通过'})
 ```
 <!--待校验的输入框必须在pop组件内-->
 <pop>
-  <!--该输入框内容必须为10位整数-->
-  <input v-verify int length="10">
+  <!--该输入框内容为最多为两位小数的数字-->
+  <input v-verify decimal-length="2">
 </pop>
 ```
 ![image](https://github.com/aweiu/vue-verify-pop/blob/master/example.png)
@@ -133,13 +133,13 @@ number/int/phone等无须设定值的规则可以直接：
   <input v-verify phone>
 </pop>
 ```
-maxNumber/minNumber无须写number规则
+maxNumber/minNumber/decimalLength无须写number规则
 ```
 <pop>
   <!--该输入框内容必须为不大于10的数字-->
-  <input v-verify maxNumber="10">
+  <input v-verify max-number="10">
   <!--不用这么写-->
-  <input v-verify number maxNumber="10">
+  <input v-verify number max-number="10">
 </pop>
 ```
 ## 自定义校验方法
