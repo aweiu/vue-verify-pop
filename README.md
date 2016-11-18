@@ -27,6 +27,8 @@ verify.addRule('myRule', (v) => {return '校验不通过'})
   <input v-verify int length="10">
 </pop>
 ```
+![image](https://github.com/aweiu/vue-verify-pop/blob/master/example.png)
+
 ok，您已经完成了一个基础校验。气泡提示怎么样？丑的话自己用css改吧。。<br>
 *当输入框失去焦点时会自动触发校验，如果校验不通过会出现气泡。再次输入气泡会消失*
 
