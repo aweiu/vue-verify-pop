@@ -1,6 +1,18 @@
 {
   "name": "vue-verify-pop",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "description": "自带气泡提示的vue校验插件",
+  "keywords": [
+    "verify",
+    "validator",
+    "verification",
+    "check",
+    "pop",
+    "vue-verify",
+    "vue-validator",
+    "vue-verification",
+    "vue-check"
+  ],
   "author": {
     "name": "余阿伟"
   },
@@ -12,5 +24,6 @@
   "dependencies": {
     "verify-base": "0.x",
     "vue-pop": "0.x"
-  }
+  },
+  "license": "ISC"
 }
