@@ -167,7 +167,9 @@ var exp = {
           this.on(specialInputs.indexOf(this.el.type) === -1 ? 'input' : 'change', clearError)
           var model = this.el.__v_model
           if (model) model.vm.$watch(model.expression, clearError)
-          for (let directive of this.vm._directives) {
+          var directives = this.vm._directives
+          for (var i = 0, l = directives.length; i < l; i++) {
+            var directive = directives[i]
             if (directive.el === this.el && directive.name === 'bind' && directive.arg === 'value') {
               this.vm.$watch(directive.expression, clearError)
               break

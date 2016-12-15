@@ -286,3 +286,9 @@ verify.errMsg.int = '{mark}必须为整数'
   <input v-model="cardId" v-verify length="10" err-msg="卡号不正确">
 </pop>
 ```
+### verifyBase
+本插件校验的核心方法来自[verify-base](https://github.com/aweiu/verify-base)
+```
+// 通过该方式获取verifyBase以使用其内置的各种校验方法
+verify.verifyBase
+```

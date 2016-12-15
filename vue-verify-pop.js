@@ -1,12 +1,13 @@
+/**
+ * Created by awei on 2016/6/17.
+ */
+
 'use strict';
 
 var verifyBase = require('verify-base');
 
 var pop = require('vue-pop');
 
-/**
- * Created by awei on 2016/6/17.
- */
 // self:当前verifyDirective实例
 var verifyErrMsg = require('./verify-err-msg');
 
@@ -160,34 +161,14 @@ var exp = {
           _this.on(specialInputs.indexOf(_this.el.type) === -1 ? 'input' : 'change', clearError);
           var model = _this.el.__v_model;
           if (model) model.vm.$watch(model.expression, clearError);
-          var _iteratorNormalCompletion = true;
-          var _didIteratorError = false;
-          var _iteratorError = undefined;
-
-          try {
-            for (var _iterator = _this.vm._directives[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-              var directive = _step.value;
-
-              if (directive.el === _this.el && directive.name === 'bind' && directive.arg === 'value') {
-                _this.vm.$watch(directive.expression, clearError);
-                break;
-              }
-            }
-          } catch (err) {
-            _didIteratorError = true;
-            _iteratorError = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-              }
-            } finally {
-              if (_didIteratorError) {
-                throw _iteratorError;
-              }
+          var directives = _this.vm._directives;
+          for (var i = 0, l = directives.length; i < l; i++) {
+            var directive = directives[i];
+            if (directive.el === _this.el && directive.name === 'bind' && directive.arg === 'value') {
+              _this.vm.$watch(directive.expression, clearError);
+              break;
             }
           }
-
           _this.el._verify = _this;
         });
       }
