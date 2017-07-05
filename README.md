@@ -288,6 +288,8 @@ verify.errMsg.int = '{mark}必须为整数'
   <input v-model="cardId" v-verify length="10" err-msg="卡号不正确">
 </pop>
 ```
+### pop
+本插件的气泡提示来自[vue-pop](https://github.com/aweiu/vue-pop)，有关气泡提示的设置请参考该文档
 ### verifyBase
 本插件校验的核心方法来自[verify-base](https://github.com/aweiu/verify-base)
 ```
