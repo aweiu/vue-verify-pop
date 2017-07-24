@@ -1,18 +1,12 @@
-/**
- * Created by awei on 2016/6/17.
- */
-
 'use strict';
-
 var verifyBase = require('verify-base');
-
 var pop = require('vue-pop');
 
 // self:当前verifyDirective实例
 var verifyErrMsg = require('./verify-err-msg');
 
 verifyBase.errMsg = verifyErrMsg;
-var vue;
+var vue = void 0;
 var groups = {
   add: function add(uid, name, group) {
     if (!this.hasOwnProperty(uid)) this[uid] = {};
@@ -20,6 +14,9 @@ var groups = {
   },
   get: function get(uid, name) {
     if (this[uid]) return this[uid][name];
+  },
+  remove: function remove(uid, name) {
+    if (this[uid]) delete this[uid][name];
   }
 };
 var verifyResult = {
@@ -37,9 +34,10 @@ var verifyResult = {
   }
 };
 var specialInputs = ['checkbox', 'file'];
+
 function specialInput(el, rules) {
-  var type = el.type;
   var rs = true;
+  var type = el.type;
   switch (type) {
     case 'checkbox':
       if (!el.checked) rs = verifyErrMsg.specialInput.checkbox;
@@ -50,19 +48,22 @@ function specialInput(el, rules) {
   }
   return rs;
 }
+
 function verifyFromRules(val, rules) {
+  var justVerifyRule = void 0;
   if (!rules['space']) val = val.trim();
   if (val === '') {
     if (rules.minLength === '0' || rules.canBeNull !== undefined) {
-      if (rules.verify) var justVerifyRule = { verify: rules.verify };else return undefined;
+      if (rules.verify) justVerifyRule = { verify: rules.verify };else return undefined;
     } else {
       return verifyErrMsg.common.empty;
     }
   }
   for (var rule in justVerifyRule || rules) {
+    var verifyFun = void 0;
     if (rule === 'pop' || rule === 'errMsg' || rule === 'noCache' || rule === 'canBeNull' || rule === 'watch') continue;
     if (rule === 'verify') {
-      var verifyFun = rules[rule];
+      verifyFun = rules[rule];
       if (typeof verifyFun === 'function') {
         var vRs = verifyFun(val);
         // 自定义校验函数返回的错误信息优先级最高
@@ -72,11 +73,12 @@ function verifyFromRules(val, rules) {
     }
     verifyFun = verifyBase(rule);
     if (verifyFun) {
-      var verifyResult = verifyFun(val, rules[rule]);
-      if (!verifyResult.valid) return verifyResult.err_msg;
+      var _verifyResult = verifyFun(val, rules[rule]);
+      if (!_verifyResult.valid) return _verifyResult.err_msg;
     }
   }
 }
+
 function verify() {
   var self = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this;
   var el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : self.el;
@@ -117,6 +119,7 @@ function getPopTip() {
     methods: component.new()
   };
 }
+
 var exp = {
   install: function install(Vue) {
     vue = Vue;
@@ -124,6 +127,7 @@ var exp = {
       params: ['pop', 'errMsg', 'noCache', 'canBeNull', 'watch', 'verify', 'length', 'minLength', 'maxNumber', 'minNumber', 'decimalLength', 'int', 'phone', 'idCard', 'bankCard', 'space', 'verifyCode', 'email'],
       paramWatchers: {
         watch: function watch() {
+          if (!this._pop) return;
           this.verifyResult.valid = 'unknown';
           this._pop.component.$emit('verify');
         }
@@ -177,9 +181,12 @@ var exp = {
       template: '<slot></slot>',
       created: function created() {
         if (!this.name) return console.warn('invalid group name');
-        var uid = this.$parent._uid;
-        if (groups.get(uid, this.name)) return console.warn('the name \'' + this.name + '\' has be used');
-        groups.add(uid, this.name, this);
+        this.__uid = this.$parent._uid;
+        if (groups.get(this.__uid, this.name)) return console.warn('the name \'' + this.name + '\' has be used');
+        groups.add(this.__uid, this.name, this);
+      },
+      destroyed: function destroyed() {
+        groups.remove(this.__uid, this.name);
       },
 
       props: ['name']
@@ -188,13 +195,14 @@ var exp = {
     Vue.prototype.$verify = function (target) {
       var showError = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
-      verifyResult.clear();
+      var pop = void 0;
       var eType = showError ? 'verify' : 'verifyWithoutErrorTip';
+      verifyResult.clear();
       if (typeof target === 'string') {
         if (target.substr(0, 1) === '#') {
           target = document.getElementById(target.substr(1));
           if (target) {
-            var pop = target._verify._pop.component;
+            pop = target._verify._pop.component;
             if (pop) pop.$emit(eType);
           }
         } else {
@@ -223,7 +231,7 @@ var exp = {
   errMsg: verifyErrMsg,
   verifyBase: verifyBase
 };
-Object.defineProperty(exp, "errMsg", {
+Object.defineProperty(exp, 'errMsg', {
   set: function set(v) {
     verifyErrMsg = v;
     verifyBase.errMsg = v;
